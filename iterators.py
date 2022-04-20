@@ -112,3 +112,38 @@ class SkipMissingIterator:
 
     def __iter__(self):
         return self
+
+
+typesetting = {
+    "-": "\u2212",
+    "*": "\u00D7",
+    "/": "\u00F7"
+}
+
+
+class TranslationIterator:
+
+    def __init__(self, table, iterable):
+        self._table = table
+        self._iterator = iterable
+
+    def __next__(self):
+        item = next(self._iterator)
+        return self._table.get(item, item)
+
+    def __iter__(self):
+        return self
+
+
+class PerfectBinaryTree:
+
+    def __init__(self, bread_first_items):
+        self._sequence = bread_first_items
+        if not _is_perfect_length(self._sequence):
+            raise ValueError(
+                f"Sequence of length {len(self._sequence)} does not represent "
+                f"a perfect binary tree with length 2**n - 1"
+            )
+
+    def __iter__(self):
+        return SkipMissingIterator(PreOrderIterator(self._sequence))
